@@ -1,19 +1,105 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<title>Scripts PHP</title>
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="style.css">
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 
+    <meta http-equiv="content-language" content="fr">
+
+    <title>Application IMC</title>
+
+  </head>
 <body>
-<h3>Programmes d'entrainement en PHP</h3>
-<p>Ce dossier contient des programmes d'entrainement réalisés en PHP.</p>
+	<h2>Calculez votre IMC (Indice de Masse Corporelle)</h2>
+<form method="POST" action="IMC.php" name="votre-demande" >
+	<!--<p align="left">Vous êtes : <br /><input type="radio" name="sexe" value="homme"> homme</p>
+	<p align="left">Vous êtes : <br /><input type="radio" name="sexe" value="femme"> femme</p>-->
+	<p align="left">Votre poids : <br /><input type="text" name="poids" width="45px"> kg</p>
+	<p align="left">Votre taille : <br /><input type="text" name="taille" width="28px"> m</p>
+    <p align="left"><input type="submit" name="envoyer" value="Je calcule mon IMC" width="28px"></p>
+</form>
+<?php
+if (isset($_POST['poids'])) // existe toujours de toute façon car $poids est defini dans le formulaire donc pas de else
+{
+	if ( !empty($_POST['poids'])) // Si le champ poids n est pas vide
+	{
+		if ( !empty($_POST['taille']) ) // Si le champ taille n'est pas vide
+		{
+		            if (is_numeric($_POST['poids']))// on verifie si le poids est un nombre
+					{
+							if (is_numeric($_POST['taille']))// on verifie si la taille est un nombre
+							{
+								//var_dump($_POST);// le var dump du $_POST te dit que les variables du formulaire sont bien stockées mais pour les afficher faudra faire autrement que le formulaire de contact
+								//faire un explode()
 
-<p><a href="parseurXMLfournisseursValidated.php">Application XML</a> : Je me suis entrainé à parser un fichier XML Microsoft avec la fonction simpleXML et XPath. J'ai accédé aux noeuds des éléments avec l'opérateur flêche de php5. J'ai mis en forme à l'aide de boucle PHP et de feuille XSL.</p>
-<p><a href="imc.php">Application IMC</a> : J'ai réalisé un programme en php pour calculer son Indice de Masse Corporelle. J'ai utiliser un formulaire et des structure de condition pour traiter le formulaire</p>
-<p><a href="../espaceclient/index.php">Espace Client</a> : J'ai réalisé plusieurs pages en php pour s'inscrire, se connecter à un espace client et mettre à jour son profil.</p>
+                                            $poids=($_POST['poids']);
+                                            $taille=($_POST['taille']);
+													// bon deja t as pas d enregistrement en base donnees a faire
+								                   //de plus tu dois faire un explode pour recuperer les variables postees car affichage dans la page
+function calculIMC($poids,$taille){
+$IMC=$poids/($taille^2);
+return $IMC;
+}
+$IMC=calculIMC($poids,$taille);
 
+// $IMC=calculIMC(78,1.80);
+
+$IMC=round($IMC,2);
+echo "Homme : <br />";
+echo "Votre poids : " .$poids. " kg <br />";
+echo "Votre taille : " .$taille. " m <br />";
+echo "Votre IMC est de " . $IMC. "<br />";
+
+function Morpho($IMC){
+	if (16.5 >= $IMC){
+        echo "Vous êtes en famine";
+    }
+	elseif (16.5 < $IMC && $IMC<=18.5){
+		echo "Vous êtes en maigreur";
+	}
+	elseif (18.5<$IMC && $IMC<=25){
+		echo "Vous êtes en corpulence normale";
+	}
+	elseif (25<$IMC && $IMC<=30){
+		echo "Vous êtes en surpoids";
+	}
+	elseif (30<$IMC && $IMC<=35){
+        echo "Vous êtes en obésité modérée";
+	}
+	elseif (35<$IMC && $IMC<=40){
+        echo "Vous êtes en obésité sévère";
+	}
+	elseif (40<=$IMC){
+        echo "Vous êtes en obésité morbide";
+	}
+	else {
+        echo "ERREUR";
+	}
+}
+$Morpho= Morpho($IMC);
+
+
+
+										}
+										else {
+										echo '<p style="background:lightblue;color:#000;margin:0px;margin-top:5px;">Entrez un nombre pour taille de la forme 1.85</p>';
+										}
+								}
+								else {
+								echo '<p style="background:lightblue;color:#000;margin:0px;margin-top:5px;">Entrez un nombre pour votre poids</p>';
+								}
+				}
+				else
+				{
+					echo '<p style="background:lightblue;color:#000;margin:0px;margin-top:5px;">Le champ taille est vide</p><br />';
+				}
+	}
+	else
+	{
+		echo '<p style="background:lightblue;color:#000;margin:0px;margin-top:5px;">Le champ poids est vide</p><br />';
+	}
+}
+//ISSET RENVOIE TOUJOURS VRAI PAS BESOIN DE FAIRE DE ELSE CAR LA VARIABLE NOM EST DEFINIE DANS LE FORMULAIRE
+
+?>
 </body>
-</html>	
+</html>
